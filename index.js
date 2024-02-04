@@ -41,4 +41,4 @@ function Logger(log4jsLogger, appName, env) {
     }
 }
 
-module.exports = Logger;
+export default Logger;
