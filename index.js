@@ -2,10 +2,10 @@ import { DateTime } from 'luxon';
 import log4js from 'log4js';
 import os from 'os';
 
-function Logger(appName, env) {
+function Logger(appName) {
     this.hostname = os.hostname();
     this.source = appName;
-    this.env = env;
+    this.env = process.env.ENV ?? 'unknown';
     this.ver = process.env.VER ?? 'unknown';
 
     // https://github.com/log4js-node/log4js-node/blob/master/docs/layouts.md
@@ -126,6 +126,13 @@ function Logger(appName, env) {
 
     if(!log4jsEmailConfigured) {
         this.logger.warn("log4jsEmailNotConfigured");
+    } else {
+        this.logger.info("log4jsEmailConfigured", {
+            "emailService": EMAIL_SERVICE,
+            "emailUsername": EMAIL_USERNAME,
+            "emailSender": EMAIL_SENDER,
+            "emailRecipients": EMAIL_RECIPIENTS,
+        });
     }
 
     if(!log4jsSlackConfigured) {
