@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 import log4js from 'log4js';
 import os from 'os';
+import path from 'path';
 
 function Logger(appName) {
     this.hostname = os.hostname();
@@ -18,13 +19,17 @@ function Logger(appName) {
         },
     };
 
+    const logBaseDir = './storage/logs';
+    const infoLogPath = path.join(logBaseDir, `${appName}.log`);
+    const errorLogPath = path.join(logBaseDir, `${appName}Error.log`);
+
     // note: type 'file' might fail to write if the app exits abruptly
     // aka if you use process.exit() or if the app crashes
     // you can use 'fileSync' but performance will be bad
     const log4jsConfig = {
         appenders: {
-            fileAll: { type: 'file', filename: `./storage/logs/${appName}.log`, layout: log4jsLayout.noColor },
-            fileErrorBase: { type: 'file', filename: `./storage/logs/${appName}Error.log`, layout: log4jsLayout.noColor },
+            fileAll: { type: 'file', filename: infoLogPath, layout: log4jsLayout.noColor },
+            fileErrorBase: { type: 'file', filename: errorLogPath, layout: log4jsLayout.noColor },
             fileError: { type: 'logLevelFilter', appender: 'fileErrorBase', level: 'error' },
             stdout: { type: 'stdout', layout: log4jsLayout.noColor },
         },
@@ -123,6 +128,11 @@ function Logger(appName) {
         const data = this._buildData(eventName, eventData, "error");
         this.logger.error(JSON.stringify(data));
     }
+
+    this.info("loggerInit", {
+        "infoLogPath": infoLogPath,
+        "errorLogPath": errorLogPath,
+    });
 
     if(!log4jsEmailConfigured) {
         this.warn("log4jsEmailNotConfigured", {
