@@ -125,9 +125,9 @@ function Logger(appName) {
     }
 
     if(!log4jsEmailConfigured) {
-        this.logger.warn("log4jsEmailNotConfigured");
+        this.warn("log4jsEmailNotConfigured");
     } else {
-        this.logger.info("log4jsEmailConfigured", {
+        this.info("log4jsEmailConfigured", {
             "emailService": EMAIL_SERVICE,
             "emailUsername": EMAIL_USERNAME,
             "emailSender": EMAIL_SENDER,
@@ -136,7 +136,12 @@ function Logger(appName) {
     }
 
     if(!log4jsSlackConfigured) {
-        this.logger.warn("log4jsSlackNotConfigured");
+        this.warn("log4jsSlackNotConfigured");
+    } else {
+        this.info("log4jsSlackConfigured", {
+            "slackChannelId": SLACK_CHANNEL_ID,
+            "slackUsername": SLACK_USERNAME,
+        });
     }
 }
 
