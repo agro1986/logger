@@ -56,7 +56,7 @@ function Logger(appName, env) {
             transport: {options: transportOptions},
             sender: EMAIL_SENDER,
             recipients: EMAIL_RECIPIENTS, // comma separated
-            subject: `[${appName} (${ENV})] Error Mail`,
+            subject: `[${appName} (${this.env})] Error Mail`,
             layout: log4jsLayout.noColor,
             sendInterval: 0 // seconds
         };
