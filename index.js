@@ -141,12 +141,12 @@ function Logger(appName) {
                 },
                 body: JSON.stringify({ text: message }),
             });
-            console.log(response.status);
+            if(!response.ok) {
+                this.warn("sendMessageToSlackNotOk", { status: response.status });
+            }
         } catch (e) {
             this.warn("sendMessageToSlackError", { error: e.toString() });
         }
-
-        //return response;
     }
 
     this.warn = function(eventName, eventData = {}) {
