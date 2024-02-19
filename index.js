@@ -142,7 +142,7 @@ function Logger(appName) {
                 body: JSON.stringify({ text: message }),
             });
             if(!response.ok) {
-                this.warn("sendMessageToSlackNotOk", { status: response.status });
+                this.warn("sendMessageToSlackError", { status: response.status });
             }
         } catch (e) {
             this.warn("sendMessageToSlackError", { error: e.toString() });
