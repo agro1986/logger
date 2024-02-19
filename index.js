@@ -8,6 +8,7 @@ function Logger(appName) {
     this.source = appName;
     this.env = process.env.ENV ?? 'unknown';
     this.ver = process.env.VER ?? 'unknown';
+    this.slackWebhookUrl = process.env.SLACK_WEBHOOK_URL ?? null;
 
     // https://github.com/log4js-node/log4js-node/blob/master/docs/layouts.md
     // will also write the color escape sequence to file, so better avoid it
@@ -114,9 +115,38 @@ function Logger(appName) {
         return {...data, ...eventData, ...dataOther};
     }
 
-    this.info = function (eventName, eventData = {}) {
+    this.info = function (eventName, eventData = {}, isImportant = false) {
         const data = this._buildData(eventName, eventData, "info");
-        this.logger.info(JSON.stringify(data));
+        const dataStr = JSON.stringify(data);
+        this.logger.info(dataStr);
+        if(isImportant) {
+            this.sendMessageToSlack(dataStr);
+        }
+    }
+
+    this.infoImportant = function (eventName, eventData = {}) {
+        this.info(eventName, eventData, true);
+    }
+
+    this.sendMessageToSlack = async function (message) {
+        if(this.slackWebhookUrl === null) {
+            return;
+        }
+
+        try {
+            const response = await fetch(this.slackWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: message }),
+            });
+            console.log(response);
+        } catch (e) {
+            this.warn("sendMessageToSlackError", { error: e.toString() });
+        }
+
+        //return response;
     }
 
     this.warn = function(eventName, eventData = {}) {
@@ -162,6 +192,10 @@ function Logger(appName) {
             "slackChannelId": SLACK_CHANNEL_ID,
             "slackUsername": SLACK_USERNAME,
         });
+    }
+
+    if(this.slackWebhookUrl === null) {
+        this.warn("slackWebhookUrlNotConfigured");
     }
 }
 
