@@ -141,7 +141,7 @@ function Logger(appName) {
                 },
                 body: JSON.stringify({ text: message }),
             });
-            console.log(response);
+            console.log(response.status);
         } catch (e) {
             this.warn("sendMessageToSlackError", { error: e.toString() });
         }
