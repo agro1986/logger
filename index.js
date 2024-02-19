@@ -116,7 +116,10 @@ function Logger(appName) {
     }
 
     this.info = function (eventName, eventData = {}, isImportant = false) {
-        const data = this._buildData(eventName, eventData, "info");
+        let data = this._buildData(eventName, eventData, "info");
+        if(isImportant) {
+            data = {...data, __isImportant: true};
+        }
         const dataStr = JSON.stringify(data);
         this.logger.info(dataStr);
         if(isImportant) {
