@@ -142,6 +142,8 @@ function Logger(appName) {
                 body: JSON.stringify({ text: message }),
             });
             if(!response.ok) {
+                // get the response body as string
+                //const body = await response.text();
                 this.warn("sendMessageToSlackError", { status: response.status });
             }
         } catch (e) {
