@@ -1,6 +1,6 @@
 {
   "name": "logger",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,9 +10,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "luxon": "^3.4.4",
-    "log4js": "^6.9.1",
     "@log4js-node/slack": "^1.0.0",
-    "@log4js-node/smtp": "^2.0.8"
+    "@log4js-node/smtp": "^2.0.8",
+    "log4js": "^6.9.1",
+    "luxon": "^3.4.4",
+    "node-fetch": "^3.3.2"
   }
 }

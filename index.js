@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import log4js from 'log4js';
 import os from 'os';
 import path from 'path';
+import fetch from 'node-fetch';
 
 function Logger(appName) {
     this.hostname = os.hostname();
